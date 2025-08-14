@@ -1,0 +1,125 @@
+import logging
+
+# Description:
+# Product has it's attributes and methods.
+# all attributes is covered with @property decorators to ensure input validation
+# all input validations is covered with exeption handling
+# 
+# Subscription (child) class is inherited from Product (parent)
+# - Has buy() method override, additional atribute & method.
+
+class Product:
+
+    def __init__(self, title, description, price, type="Product"):
+        self._title = title # All atributes is non-public. Accessible by properties.
+        self._type = type
+        self._description = description
+        self._price = price
+
+
+    @property
+    def title(self):
+        return self._title
+
+    @title.setter
+    def title(self, title):
+        self._title = title
+
+    @title.deleter
+    def title(self):
+        del self._title
+        print(f"{self._title} deleted")
+
+    @property
+    def type(self):
+        return self._type
+
+    @type.setter
+    def type(self, type):
+        self._type = type
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, description):
+        self._description = description
+
+    @property
+    def price(self):
+        return self._price
+    
+    @price.setter
+    def price(self, price):
+            if price > 0:
+                self._price = price
+            else:
+                raise ValueError("price could not be less than 0")
+
+    # ----- Methods ------
+
+    def buy(self, userId):
+        print(f"User '{userId}' has bought {self.type}: '{self.title}' for {self.price} CHF")
+        
+
+
+   
+    
+
+# Class Inherited from Product. It is like a Product, but with date features.
+class Subscription(Product):
+    def __init__(self, title, description, price, days, type="Subscription"):
+        super().__init__(title, description, price, type) 
+        self._days = days  
+
+    # Additional attribute for Inherited class. With property wrap.
+    @property
+    def days(self):
+        return self._days
+    
+    # Days setter with greater than 0 validation + exeption handling
+    @days.setter
+    def days(self, days):
+        self._days = days
+
+
+    # Polymorphism - ovverriding of parrent's method with different functionality
+    def buy(self, user):
+        print(f"User '{user}' has bought {self.type}: '{self.title}' for {self.price} CHF \n and it wil last for {self.days} days")
+
+    # Additional method into Inherited class
+    def extend(self, days):
+        self.days += days
+        print(f"The '{self.title}' subscription was extended for: {self.days} days")
+
+class ShipmentProduct (Product):
+    def __init__(self, title, description, price, address, type="Product"):
+        super().__init__(title, description, price, type)
+        self.address = address
+    
+    def buy(self, userId):
+        super().buy(userId)
+        print(f"The order will be shiped to {self.address}")
+
+
+# Objects initialization (e.g. recieved database package)
+product = Product("Keyboard", "The buttons goes click", 150)
+subscription1 = Subscription("Fresh Air", "Wind blow in your area every 30 sec", 300, 30)
+subscription2 = Subscription("Coffee Everyday", "Wind blow in your area every 30 sec", 300, 30, "Waste of money")
+shipment = ShipmentProduct("Happiness", "No refunds", 500, "2007.Memories Street.DreamLand")
+
+
+#actions and use of Methods
+product.buy("Tom")
+
+
+subscription1.buy("Jim")
+subscription1.extend(15)
+
+
+subscription2.buy("Beam")
+subscription2.extend(20)
+
+
+shipment.buy("You")
