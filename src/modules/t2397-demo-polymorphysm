@@ -1,5 +1,3 @@
-import logging
-
 # Description:
 # Product has it's attributes and methods.
 # all attributes is covered with @property decorators to ensure input validation
@@ -7,6 +5,8 @@ import logging
 # 
 # Subscription (child) class is inherited from Product (parent)
 # - Has buy() method override, additional atribute & method.
+#
+# ShipmentProduct also Inherites from Product but now with address
 
 class Product:
 
