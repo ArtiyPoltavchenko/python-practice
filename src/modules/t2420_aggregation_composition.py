@@ -2,9 +2,9 @@
 from errors_simple import CheckIfValid # errors check utilities
 
 
-class BookContainer:
+class BooksContainer:
     def __init__(self):
-        self.booksByAuthor = {} # Aggregation - Books are independent and can leave without BookContainer, but can be found in it. 
+        self.booksByAuthor = {} # Aggregation - Books are independent and can leave without BooksContainer, but can be found in it. 
 
     def ensureList(self, books):
         if isinstance(books, BorrowedBook):
@@ -41,7 +41,7 @@ class BookContainer:
             self.booksByAuthor.setdefault(book.author.name, []).append(book)
                         
 
-class Library(BookContainer):
+class Library(BooksContainer):
     def __init__(self, name, city, street, building):
         super().__init__()
         self.name = name        
@@ -62,10 +62,10 @@ class Author:
         self.name = name
 
 class Book:
-    def __init__(self, title, description, author=None):
+    def __init__(self, title, description, author="Unknown"):
         self.title = title
         self.description = description
-        self._author = author if author else Author("Unknown")
+        self._author = author
     
     
     @property
@@ -112,9 +112,10 @@ libray.addBooks(BorrowedBook("Lonely Book", "Just to test single adding", author
 
 print(libray.booksByAuthor.keys())
 
+# Change Unknown Author to Nick, and update the Library
 bookToUpdate = libray.booksByAuthor["Unknown"][0]
 bookToUpdate.author = Author("Nick")
-libray.updateBooks(bookToUpdate)
+libray.updateBooks(bookToUpdate) 
 
 #print(libray.booksByAuthor["Unknown"][0].author.name)
 print(libray.booksByAuthor.keys())
