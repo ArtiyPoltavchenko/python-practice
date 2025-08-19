@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     actor User
 
@@ -14,3 +15,4 @@ sequenceDiagram
     User ->> paymentService : pay
     Cart -x Storage : remove products
     
+```
