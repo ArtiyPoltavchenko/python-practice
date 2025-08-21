@@ -1,5 +1,5 @@
 # OOP Practice Aggregation & Composition - Library example
-from errors_simple import CheckIfValid # errors check utilities
+from errors_handler import CheckIfValid # errors check utilities
 
 
 class BooksContainer:
@@ -10,7 +10,7 @@ class BooksContainer:
         if isinstance(books, BorrowedBook):
             books = [books]
         return books
-
+    
     def addBooks(self, books): # now with Bulk method support!
         
         for book in self.ensureList(books):
@@ -62,10 +62,10 @@ class Author:
         self.name = name
 
 class Book:
-    def __init__(self, title, description, author="Unknown"):
+    def __init__(self, title, description, author=None):
         self.title = title
         self.description = description
-        self._author = author
+        self._author = author if author else Author("Unknown")
     
     
     @property
