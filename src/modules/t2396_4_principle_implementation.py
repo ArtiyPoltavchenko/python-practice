@@ -69,7 +69,6 @@ class Product:
     def buy(self, user):
         print(f"User '{user}' has bought {self.type}: '{self.title}' for {self.price} CHF")
         Product.products_sold += 1 # or ++ ? which one will make it more obvious for reader ?
-
     
     def price(self):
         return self._price

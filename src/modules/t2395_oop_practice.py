@@ -18,7 +18,7 @@ class Note:
         for word in self.content.split():
             container.append(word)
 
-        if range_1 or range_2:
+        if range_1 or range_2:  
             print(" ".join(container[range_1:range_2]))
         else:
             print(" ".join(container))
@@ -26,4 +26,4 @@ class Note:
 
 note = Note("Story", "A Long Enaught Story")
 note.printContentByLine()
-note.printContentByLine(1, 3)
+note.printContentByLine(None)
