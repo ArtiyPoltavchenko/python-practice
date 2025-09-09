@@ -10,7 +10,7 @@
 
 class Product:
 
-    def __init__(self, title, description, price, type="Product"):
+    def __init__(self, title:str, description:str, price:str, type:str="Product"):
         self._title = title # All atributes is non-public. Accessible by properties.
         self._type = type
         self._description = description
@@ -18,11 +18,11 @@ class Product:
 
 
     @property
-    def title(self):
+    def title(self) -> str:
         return self._title
 
     @title.setter
-    def title(self, title):
+    def title(self, title:str):
         self._title = title
 
     @title.deleter
@@ -31,11 +31,11 @@ class Product:
         print(f"{self._title} deleted")
 
     @property
-    def type(self):
+    def type(self) -> str:
         return self._type
 
     @type.setter
-    def type(self, type):
+    def type(self, type:str):
         self._type = type
 
     @property
@@ -43,7 +43,7 @@ class Product:
         return self._description
 
     @description.setter
-    def description(self, description):
+    def description(self, description:str):
         self._description = description
 
     @property
@@ -51,7 +51,7 @@ class Product:
         return self._price
     
     @price.setter
-    def price(self, price):
+    def price(self, price:int):
             if price > 0:
                 self._price = price
             else:
@@ -59,9 +59,13 @@ class Product:
 
     # ----- Methods ------
 
-    def buy(self, userId):
-        print(f"User '{userId}' has bought {self.type}: '{self.title}' for {self.price} CHF")
+    def buy(self, userId:str):
+        print(self._getTransactionInfo(userId))
         
+    def _getTransactionInfo(self, userId:str) -> str:
+        """Print out transaction information"""
+        return (f"User '{userId}' has bought {self.type}: '{self.title}' for {self.price} CHF")
+    
 
 
    
@@ -69,7 +73,7 @@ class Product:
 
 # Class Inherited from Product. It is like a Product, but with date features.
 class Subscription(Product):
-    def __init__(self, title, description, price, days, type="Subscription"):
+    def __init__(self, title:str, description:str, price:int, days:int, type:str="Subscription"):
         super().__init__(title, description, price, type) 
         self._days = days  
 
@@ -80,34 +84,39 @@ class Subscription(Product):
     
     # Days setter with greater than 0 validation + exeption handling
     @days.setter
-    def days(self, days):
+    def days(self, days:int):
         self._days = days
 
 
     # Polymorphism - ovverriding of parrent's method with different functionality
-    def buy(self, user):
-        print(f"User '{user}' has bought {self.type}: '{self.title}' for {self.price} CHF \n and it wil last for {self.days} days")
-
+    def _getTransactionInfo(self, user:str) -> str:
+        """Print out transaction information"""
+        return (f"User '{user}' has bought {self.type}: '{self.title}' for {self.price} CHF \n and it wil last for {self.days} days")
+    
     # Additional method into Inherited class
-    def extend(self, days):
+    def extend(self, days:int):
         self.days += days
         print(f"The '{self.title}' subscription was extended for: {self.days} days")
 
 class ShipmentProduct (Product):
-    def __init__(self, title, description, price, address, type="Product"):
+    def __init__(self, title:str, description:str, price:int, address:str, type:str="Product"):
         super().__init__(title, description, price, type)
         self.address = address
     
-    def buy(self, userId):
+    # A small addition after parrent's fuction without copy-pasteing the code.
+    def buy(self, userId:str):
         super().buy(userId)
         print(f"The order will be shiped to {self.address}")
+
+    
+    
 
 
 # Objects initialization (e.g. recieved database package)
 product = Product("Keyboard", "The buttons goes click", 150)
 subscription1 = Subscription("Fresh Air", "Wind blow in your area every 30 sec", 300, 30)
 subscription2 = Subscription("Coffee Everyday", "Wind blow in your area every 30 sec", 300, 30, "Waste of money")
-shipment = ShipmentProduct("Happiness", "No refunds", 500, "2007.Memories Street.DreamLand")
+shipment = ShipmentProduct("Happiness", "No refunds", 500, "2006. Memories Street. DreamLand")
 
 
 #actions and use of Methods

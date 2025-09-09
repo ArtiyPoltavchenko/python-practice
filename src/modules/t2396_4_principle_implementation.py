@@ -11,7 +11,7 @@ import logging
 class Product:
     products_sold = 0 #attribute, variable for the whole type of classes and inheritance
 
-    def __init__(self, title, description, price, type="Product"):
+    def __init__(self, title:str, description:str, price:int, type:str="Product") -> None:
         self._title = title # All atributes is non-public. Accessible by properties.
         self._type = type
         self._description = description
@@ -33,12 +33,12 @@ class Product:
     # ----- Properties ------
 
     @property
-    def title(self):
+    def title(self) -> str:
         return self._title
 
     @title.setter
     @stringExceptionHandler
-    def title(self, title):
+    def title(self, title:str):
         self._title = title
 
     @title.deleter
@@ -47,33 +47,38 @@ class Product:
         print(f"{self._title} deleted")
 
     @property
-    def type(self):
+    def type(self) -> str:
         return self._type
 
     @type.setter
     @stringExceptionHandler
-    def type(self, type):
+    def type(self, type:str):
         self._type = type
 
     @property
-    def description(self):
+    def description(self) -> str:
         return self._description
 
     @description.setter
     @stringExceptionHandler
-    def description(self, description):
+    def description(self, description:str):
         self._description = description
 
     # ----- Methods ------
 
-    def buy(self, user):
-        print(f"User '{user}' has bought {self.type}: '{self.title}' for {self.price} CHF")
+    def buy(self, user:str) -> None:
+        """Process and log transaction"""
+        print(self._getTransactionInfo(user))
         Product.products_sold += 1 # or ++ ? which one will make it more obvious for reader ?
+
+    def _getTransactionInfo(self, user:str) -> str:
+        """Print out transaction information"""
+        return (f"User '{user}' has bought {self.type}: '{self.title}' for {self.price} CHF")
     
-    def price(self):
+    def price(self) -> int:
         return self._price
     
-    def set_price(self, price):
+    def set_price(self, price:int):
         try:
             if price > 0:
                 self._price = price
@@ -85,39 +90,45 @@ class Product:
    
     
 
-    def printProductsSold(self):
+    def printProductsSold(self) -> None:
+        """Simply Print out in console amount of already sold products"""
         print(f"Products already sold: {self.products_sold}")
 
     #acess to global class attribute
     @classmethod
-    def getProductsSold(cls):
+    def getProductsSold(cls) -> int:
         return cls.products_sold
     
     # actions with global class attribute
     @classmethod
-    def resetProductsSold(cls):
+    def resetProductsSold(cls) -> None:
         cls.products_sold = 0
         print("Products sold counter is setted to 0")
 
     # no class/object dependencies - working solo (alone)
     @staticmethod
-    def generateArticle(title, lastProductId):
+    def generateArticle(title:str, lastProductId:str) -> str:
         return (f"PI{title}ID{lastProductId + 1}")
 
 # Class Inherited from Product. It is like a Product, but with date features.
 class Subscription(Product):
-    def __init__(self, title, description, price, days, type="Subscription"):
+    def __init__(self, title:str, description:str, price:int, days:int, type:str="Subscription") -> None:
         super().__init__(title, description, price, type) 
         self.__days = days  
 
     # Additional attribute for Inherited class. With property wrap.
     @property
-    def days(self):
+    def days(self) -> int:
         return self.__days
     
     # Days setter with greater than 0 validation + exeption handling
     @days.setter
-    def days(self, days):
+    def days(self, days:int) -> None:
+        """
+        Days remaind in the Subscription
+
+        days: must be > 0 
+        """
         try:
             if days > 0 :
                 self.__days = days
@@ -128,12 +139,12 @@ class Subscription(Product):
             self.__days = 0
 
     # Polymorphism - ovverriding of parrent's method with different functionality
-    def buy(self, user):
+    def buy(self, user:str) -> None:
         print(f"User '{user}' has bought {self.type}: '{self.title}' for {self.price} CHF \n and it wil last for {self.days} days")
         Product.products_sold += 1
 
     # Additional method into Inherited class
-    def extend(self, days):
+    def extend(self, days:int) -> None:
         self.days += days
         print(f"The '{self.title}' subscription was extended for: {self.days} days")
 
